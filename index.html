@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Data</title>
+</head>
+<body>
+<h1>Members List</h1>
+<div id="members"></div>
+
+<script>
+async function fetchMembers() {
+  try {
+    const response = await fetch('/members');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    displayMembers(data);
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
+}
+
+function displayMembers(members) {
+  const membersContainer = document.getElementById('members');
+  membersContainer.innerHTML = ''; // Clear existing members data
+  members.forEach(member => {
+    const memberElement = document.createElement('div');
+    memberElement.textContent = `Member ID: ${member.id}, Name: ${member.name}`;
+    membersContainer.appendChild(memberElement);
+  });
+}
+
+// Fetch members data when the page loads
+document.addEventListener('DOMContentLoaded', fetchMembers);
+</script>
+</body>
+</html>
